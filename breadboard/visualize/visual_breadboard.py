@@ -4,17 +4,21 @@ import numpy as np
 
 
 class BreadBoardVisual(object):
+    y_coord2alphabet = None
+
     def __init__(self, breadboard):
         self.breadboard = breadboard
 
+        plt.ion()  # interactive on
         self.ax = None
         self.fig = None
         self.draw_basic_map()
+        """
         self.draw_chips()
         self.draw_transmit_edges()
         self.write_input()
         self.write_output()
-
+        """
         plt.show()
 
     def write_input(self):
@@ -31,7 +35,7 @@ class BreadBoardVisual(object):
         for output_node in self.breadboard.outputs:
             node = self.breadboard.graph.nodes[output_node]
             self.ax.text(node.x - 0.2, node.y + 0.2, node.name)
-            self.ax.text(34, y, node.name + ' = ' + str(node.value), size=15)
+            self.ax.text(33.5, y, node.name + ' = ' + str(node.value), size=15)
             y += 5
 
     def draw_transmit_edges(self):
@@ -66,7 +70,7 @@ class BreadBoardVisual(object):
         Xp2, Yp2 = np.meshgrid(self.breadboard.X_plug, self.breadboard.Y_plug_above)
 
         self.ax = self.fig.add_subplot(111)
-
+        self.ax.set_title('BreadBoard', fontsize=22)
         for y in self.breadboard.Y_body:
             self.ax.axhline(y, linestyle='--', color='lightgrey')
 
@@ -86,4 +90,10 @@ class BreadBoardVisual(object):
 
         self.ax.set_xticks(self.breadboard.X_body)
         self.ax.set_yticks(self.breadboard.Y_body)
-        self.ax.set_yticklabels([chr(65 + i) for i in range(len(self.breadboard.Y_body))])
+        y_label = []
+        BreadBoardVisual.y_coord2alphabet = {}
+        for i in range(len(self.breadboard.Y_body)):
+            y_label.append(chr(65 + i))
+            BreadBoardVisual.y_coord2alphabet[self.breadboard.Y_body[i]] = chr(65 + i)
+
+        self.ax.set_yticklabels(y_label)

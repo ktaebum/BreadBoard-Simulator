@@ -1,7 +1,7 @@
-from breadboard.breadmain import BreadBoardMain
+from breadboard.breadmain import BreadBoard
 from breadboard.visualize.visual_breadboard import BreadBoardVisual
 
-breadboard = BreadBoardMain()
+breadboard = BreadBoard()
 
 breadboard.add_chip(3, 'E', 7408)
 breadboard.add_chip(14, 'E', 7486)

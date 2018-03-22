@@ -11,7 +11,7 @@ class Chip(object):
 
     total_chips = 0
 
-    def __init__(self, x, y, chip_num):
+    def __init__(self, x, y, chip_type):
         self.x = np.arange(x, x + 7)  # x coord range
         self.y = np.arange(y, y + 4)  # y coord range
 
@@ -36,25 +36,25 @@ class Chip(object):
             2: (self.x[6], self.y[-1])
         }
 
-        self.name = 'Chip%d' % chip_num
+        self.name = 'Chip%d' % chip_type
 
 
 class Chip7400(Chip):
-    def __init__(self, x, y, chip_num):
-        super(Chip7400, self).__init__(x, y, chip_num)
-        self.name = '%d:7400 (NAND)_%d' % (self.total_chips, chip_num)
+    def __init__(self, x, y, chip_type):
+        super(Chip7400, self).__init__(x, y, chip_type)
+        self.name = '%d:7400 (NAND)_%d' % (self.total_chips, chip_type)
         Chip.total_chips += 1
 
 
 class Chip7486(Chip):
-    def __init__(self, x, y, chip_num):
-        super(Chip7486, self).__init__(x, y, chip_num)
-        self.name = '%d:7486 (XOR)_%d' % (self.total_chips, chip_num)
+    def __init__(self, x, y, chip_type):
+        super(Chip7486, self).__init__(x, y, chip_type)
+        self.name = '%d:7486 (XOR)_%d' % (self.total_chips, chip_type)
         Chip.total_chips += 1
 
 
 class Chip7408(Chip):
-    def __init__(self, x, y, chip_num):
-        super(Chip7408, self).__init__(x, y, chip_num)
-        self.name = '%d:7408 (AND)_%d' % (self.total_chips, chip_num)
+    def __init__(self, x, y, chip_type):
+        super(Chip7408, self).__init__(x, y, chip_type)
+        self.name = '%d:7408 (AND)_%d' % (self.total_chips, chip_type)
         Chip.total_chips += 1

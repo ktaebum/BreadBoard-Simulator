@@ -1,22 +1,15 @@
 from queue import Queue
 from matplotlib import colors as mcolors
 from .gates import *
+from .exceptions import *
+from .visualize.visual_breadboard import BreadBoardVisual
 
 import random
 
 
 class BreadGraph:
-    color_set = list(dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS).keys())
-    color_set.remove('red')
-    color_set.remove('black')
-    color_set.remove('lightgrey')
-    color_set.remove('blue')
-    color_set.remove('white')
-    color_set.remove('ghostwhite')
-    color_set.remove('w')
-    color_set.remove('whitesmoke')
-    color_set.remove('snow')
-
+    # color_set = list(dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS).keys())
+    color_set = list(mcolors.XKCD_COLORS.values())
     random.shuffle(color_set)
 
     def __init__(self):
@@ -29,10 +22,10 @@ class BreadGraph:
 
     def add_node(self, x, y, name, gate, value=None):
         if name in self.nodes.keys():
-            raise KeyError('Node Name Should be Unique!')
+            raise DuplicatedNodeException()
 
-        if gate == 'transmit' and value is None:
-            raise ValueError('Transmit Gate Should Have Value!')
+        # if gate == 'transmit' and value is None:
+        #     raise TransmitNoneValueException()
 
         new_node = BreadGraph.BreadNode(x, y, name, gate, value, BreadGraph.color_set.pop())
         self.nodes[name] = new_node
@@ -42,6 +35,7 @@ class BreadGraph:
     def add_edge(self, from_node, to_node):
         # It is a digraph, must build DAG
         if self.nodes[to_node] in self.nodes[from_node].edges:
+            # already connected
             return
         self.nodes[from_node].edges.append(self.nodes[to_node])
 
@@ -114,7 +108,8 @@ class BreadGraph:
             if self.gate == 'transmit':
                 return
             else:
-                assert len(self.value) == 2, 'Gate node should contain 2 values before calculate'
+                if len(self.value) != 2:
+                    raise GateNodeNotContainTwoValues()
                 if self.gate == 'NAND':
                     self.value = NAND_gate(*self.value)
                 elif self.gate == 'AND':
@@ -136,4 +131,6 @@ class BreadGraph:
             return self.name == other.name
 
         def __str__(self):
+            if BreadBoardVisual.y_coord2alphabet is not None:
+                return "(%d %s): %s (%s)" % (self.x, BreadBoardVisual.y_coord2alphabet[self.y], self.name, self.gate)
             return "(%d, %d): %s (%s)" % (self.x, self.y, self.name, self.gate)
