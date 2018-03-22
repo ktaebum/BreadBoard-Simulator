@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
+import re
 
 
 class BreadBoardVisual(object):
@@ -13,30 +14,102 @@ class BreadBoardVisual(object):
         self.ax = None
         self.fig = None
         self.draw_basic_map()
+
+        # For delete
+        self.lines = {}
+        self.points = {}
+        self.chips = {}
+
+        self.input_texts = {}
+        self.output_texts = {}
+
+        self.input_position = 0
+        self.output_position = 0
+
+    def draw_single_input(self, node_name):
+        node = self.breadboard.graph.nodes[node_name]
+
+        in_graph_text = self.ax.text(node.x - 0.2, node.y + 0.2, node.name)
+        out_graph_text = self.ax.text(self.breadboard.X_body[0] - 11, self.input_position,
+                                      node.name + ' = ' + str(node.value), size=15)
+
+        self.input_texts[node_name] = (in_graph_text, out_graph_text)
+        self.input_position += 5
+
+    def draw_single_output(self, node_name):
+        node = self.breadboard.graph.nodes[node_name]
+        in_graph_text = self.ax.text(node.x - 0.2, node.y + 0.2, node.name)
+        out_graph_text = self.ax.text(self.breadboard.X_body[-1] + 8, self.output_position,
+                                      node.name + ' = ' + str(node.value),
+                                      size=15)
+
+        self.output_texts[node_name] = (in_graph_text, out_graph_text)
+        self.output_position += 5
+
+    def draw_single_transmit_line(self, from_node_name, to_node_name):
+        from_node = self.breadboard.graph.nodes[from_node_name]
+        to_node = self.breadboard.graph.nodes[to_node_name]
+        self.lines[from_node_name + to_node_name] \
+            = self.ax.plot((from_node.x, to_node.x), (from_node.y, to_node.y),
+                           color=from_node.color)
+        self.points[from_node_name] = \
+            self.ax.scatter(from_node.x, from_node.y, color=from_node.color, marker='o')
+
+        self.points[to_node_name] = \
+            self.ax.scatter(to_node.x, to_node.y, color=to_node.color, marker='o')
+
+    def draw_single_chip(self, chip):
+        self.ax.add_patch(
+            patches.Rectangle(
+                (chip.x[0], chip.y[0]),
+                len(chip.x) - 1,
+                len(chip.y) - 1,
+                color='black'
+            )
+        )
+        self.ax.text(chip.x[0] + 0.8, chip.y[0] + 1.2, chip.name, color='white', size=7.5)
+
+    def clear_input(self):
+        for text in self.input_texts.values():
+            text[0].remove()
+            text[1].remove()
+
+        self.input_texts = {}
+
+    def clear_output(self):
+        for text in self.output_texts.values():
+            text[0].remove()
+            text[1].remove()
+
+        self.output_texts = {}
+
+    def remove_single_transmit_line(self, line_name):
         """
-        self.draw_chips()
-        self.draw_transmit_edges()
-        self.write_input()
-        self.write_output()
+        if line connects point 3A and 6H,
+        line name is defined as 3A6H
+        :param line_name: delete target line name
+        :return:
         """
-        plt.show()
+        pass
 
     def write_input(self):
-        y = 0
+        self.input_position = 0
         for input_node in self.breadboard.inputs:
             self.ax.text(input_node.x - 0.2, input_node.y + 0.2, input_node.name)
-            self.ax.text(-6, y, input_node.name + ' = ' + str(input_node.value), size=15)
-            y += 5
+            self.ax.text(self.breadboard.X_body[0] - 11, self.input_position,
+                         input_node.name + ' = ' + str(input_node.value), size=15)
+            self.input_position += 5
 
     def write_output(self):
         if self.breadboard.outputs is None:
             return
-        y = 0
+        self.output_position = 0
         for output_node in self.breadboard.outputs:
             node = self.breadboard.graph.nodes[output_node]
             self.ax.text(node.x - 0.2, node.y + 0.2, node.name)
-            self.ax.text(33.5, y, node.name + ' = ' + str(node.value), size=15)
-            y += 5
+            self.ax.text(self.breadboard.X_body[-1] + 8, self.output_position, node.name + ' = ' + str(node.value),
+                         size=15)
+            self.output_position += 5
 
     def draw_transmit_edges(self):
         graph = self.breadboard.graph

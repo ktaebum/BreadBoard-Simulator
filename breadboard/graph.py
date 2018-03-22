@@ -1,6 +1,6 @@
 from queue import Queue
 from matplotlib import colors as mcolors
-from .gates import *
+from breadboard.tools.gates import *
 from .exceptions import *
 from .visualize.visual_breadboard import BreadBoardVisual
 
@@ -19,6 +19,24 @@ class BreadGraph:
     def reset_graph(self):
         self.num_nodes = 0
         self.nodes = {}
+
+    def delete_node(self, node_name):
+        line_to_deletes = []
+        delete_node = self.nodes.pop(node_name)
+        for node in self.nodes.values():
+            for edge in node.edges:
+                if edge.name == node_name:
+                    line_to_deletes.append((node.name, edge.name))
+                    node.edges.remove(edge)
+
+        del delete_node
+        return line_to_deletes
+
+    def delete_edge(self, from_node_name, to_node_name):
+        from_node = self.nodes[from_node_name]
+        from_node.edges.remove(to_node_name)
+
+        return from_node_name, to_node_name
 
     def add_node(self, x, y, name, gate, value=None):
         if name in self.nodes.keys():
@@ -41,7 +59,6 @@ class BreadGraph:
 
     def calculate(self, verbose=False):
         # Calculate result based on topological sort
-
         # step1: identify source nodes
         node_in_degree = {key: 0 for key in self.nodes.keys()}
         for name in self.nodes.keys():

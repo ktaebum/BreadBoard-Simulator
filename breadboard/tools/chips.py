@@ -15,25 +15,27 @@ class Chip(object):
         self.x = np.arange(x, x + 7)  # x coord range
         self.y = np.arange(y, y + 4)  # y coord range
 
+        self.connected = {i: [False, False] for i in range(1, 5)}
+
         self.input1s = {
-            3: (self.x[0], self.y[0]),
-            4: (self.x[3], self.y[0]),
             1: (self.x[1], self.y[-1]),
-            2: (self.x[4], self.y[-1])
+            2: (self.x[4], self.y[-1]),
+            3: (self.x[0], self.y[0]),
+            4: (self.x[3], self.y[0])
         }
 
         self.input2s = {
+            1: (self.x[2], self.y[-1]),
+            2: (self.x[5], self.y[-1]),
             3: (self.x[1], self.y[0]),
             4: (self.x[4], self.y[0]),
-            1: (self.x[2], self.y[-1]),
-            2: (self.x[5], self.y[-1])
         }
 
         self.outputs = {
+            1: (self.x[3], self.y[-1]),
+            2: (self.x[6], self.y[-1]),
             3: (self.x[2], self.y[0]),
             4: (self.x[5], self.y[0]),
-            1: (self.x[3], self.y[-1]),
-            2: (self.x[6], self.y[-1])
         }
 
         self.name = 'Chip%d' % chip_type
