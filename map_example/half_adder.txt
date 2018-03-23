@@ -1,0 +1,12 @@
+chip 10E 7408
+chip 20E 7486
+in A 5I
+in B 18H
+connect A 0 2
+connect B 0 2
+connect A 1 1
+connect B 1 1
+line 28I 0 2
+line 36H 1 1
+output 28I C 32I
+output 36H S 40H

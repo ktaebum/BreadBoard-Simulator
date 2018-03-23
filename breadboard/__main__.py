@@ -8,6 +8,8 @@ import os
 command_map = map_commands()
 command_log = []
 
+verbose = False
+
 
 def save_command_log(logs, file_name):
     file = open(file_name, 'w')
@@ -19,7 +21,6 @@ def save_command_log(logs, file_name):
 def parse_command(command):
     command_log.append(command)
     command = re.split(r'\s+', command)
-    command = list(filter(lambda x: x != '', command))
     try:
         command[0] = command_map[command[0]]
     except KeyError:
@@ -87,7 +88,7 @@ def parse_command(command):
         input_values = [i in ['True', '1', 'T'] for i in command[1:]]
         interface.clear_input()
         interface.clear_output()
-        board.calculate(input_values, True)
+        board.calculate(input_values, verbose)
         interface.write_input()
         interface.write_output()
     elif command[0] == 'save':
@@ -102,8 +103,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-i', '--input', type=str, help='Input file name (contain path)')
+    parser.add_argument('-v', '--verbose', action='store_true', help='Whether print internal results or not')
 
     args = parser.parse_args()
+
+    verbose = args.verbose
 
     board = BreadBoard()
     interface = BreadBoardVisual(board)
@@ -113,8 +117,7 @@ if __name__ == '__main__':
         map_file = open(path, 'r')
 
         for line in map_file:
-            print(line)
-            parse_command(line)
+            parse_command(line[:-1])
 
         map_file.close()
 

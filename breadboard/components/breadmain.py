@@ -176,6 +176,8 @@ class BreadBoard(object):
         assert len(input_values) == len(self.inputs), 'Must input boolean item for all variables!'
         for i in range(len(self.inputs)):
             self.inputs[i].value = input_values[i]
+            if verbose:
+                print('Input %s, with value %s' % (self.inputs[i].name, input_values[i]))
         self.outputs = self.graph.calculate(verbose)
 
         return self.outputs

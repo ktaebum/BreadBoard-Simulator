@@ -64,10 +64,11 @@ class BreadBoardVisual(object):
                 (chip.x[0], chip.y[0]),
                 len(chip.x) - 1,
                 len(chip.y) - 1,
-                color='black'
+                color='black',
+                alpha=0.2
             )
         )
-        self.ax.text(chip.x[0] + 0.8, chip.y[0] + 1.2, chip.name, color='white', size=7.5)
+        self.ax.text(chip.x[0] + 0.6, chip.y[0] + 1.2, chip.name, color='black', size=10)
 
     def clear_input(self):
         for text in self.input_texts.values():

@@ -74,9 +74,6 @@ class BreadGraph:
         queue = Queue()
         for name in node_in_degree.keys():
             if node_in_degree[name] == 0:
-                self.nodes[name].calculate_gate()
-                if verbose:
-                    print('Node' + str(self.nodes[name]) + ' Calculated, with value = ' + str(self.nodes[name].value))
                 queue.put(name)
 
         result = {}
@@ -98,8 +95,8 @@ class BreadGraph:
                 if node_in_degree[edge.name] == 0:
                     edge.calculate_gate()
                     if verbose:
-                        print(
-                            'Node' + str(edge) + ' Calculated, with value = ' + str(edge.value))
+                        if edge.gate != 'transmit':
+                            print('Node' + str(edge) + ' Calculated, with value = ' + str(edge.value))
                     queue.put(edge.name)
 
         return result
