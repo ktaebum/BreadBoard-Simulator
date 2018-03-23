@@ -1,4 +1,4 @@
-from breadboard.breadmain import BreadBoard
+from breadboard.components.breadmain import BreadBoard
 from breadboard.visualize.visual_breadboard import BreadBoardVisual
 
 breadboard = BreadBoard()

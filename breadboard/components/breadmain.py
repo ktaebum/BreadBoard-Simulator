@@ -1,16 +1,18 @@
-from .tools.chips import *
+from breadboard.tools.chips import *
 from .graph import BreadGraph
-from .exceptions import *
+from breadboard.exceptions import *
 
 
 class BreadBoard(object):
-    def __init__(self, x_body=1):
+    def __init__(self):
         # Basic Coordinate Set For Visualization
         # x_body = breadboard length
-        self.X_body = np.arange(0, 30 * x_body) + 1
-        self.X_plug = np.arange(0, 25 * x_body) - 0.5
+        body_length = 45
+
+        self.X_body = np.arange(0, body_length) + 1
+        self.X_plug = np.arange(0, body_length - 5) - 0.5
         for i in range(1, len(self.X_plug) // 5):
-            self.X_plug[5 * i::] += (2 - 0.5 * (x_body - 1))
+            self.X_plug[5 * i::] += 1.1
 
         self.Y_body = np.arange(5, 15)
         self.Y_body[5::] += 2

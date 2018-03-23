@@ -39,7 +39,7 @@ class BreadBoardVisual(object):
     def draw_single_output(self, node_name):
         node = self.breadboard.graph.nodes[node_name]
         in_graph_text = self.ax.text(node.x - 0.2, node.y + 0.2, node.name)
-        out_graph_text = self.ax.text(self.breadboard.X_body[-1] + 8, self.output_position,
+        out_graph_text = self.ax.text(self.breadboard.X_body[-1] + 4, self.output_position,
                                       node.name + ' = ' + str(node.value),
                                       size=15)
 
@@ -95,9 +95,11 @@ class BreadBoardVisual(object):
     def write_input(self):
         self.input_position = 0
         for input_node in self.breadboard.inputs:
-            self.ax.text(input_node.x - 0.2, input_node.y + 0.2, input_node.name)
-            self.ax.text(self.breadboard.X_body[0] - 11, self.input_position,
-                         input_node.name + ' = ' + str(input_node.value), size=15)
+            in_graph_text = self.ax.text(input_node.x - 0.2, input_node.y + 0.2, input_node.name)
+            out_graph_text = self.ax.text(self.breadboard.X_body[0] - 11, self.input_position,
+                                          input_node.name + ' = ' + str(input_node.value), size=15)
+
+            self.input_texts[input_node.name] = (in_graph_text, out_graph_text)
             self.input_position += 5
 
     def write_output(self):
@@ -106,9 +108,11 @@ class BreadBoardVisual(object):
         self.output_position = 0
         for output_node in self.breadboard.outputs:
             node = self.breadboard.graph.nodes[output_node]
-            self.ax.text(node.x - 0.2, node.y + 0.2, node.name)
-            self.ax.text(self.breadboard.X_body[-1] + 8, self.output_position, node.name + ' = ' + str(node.value),
-                         size=15)
+            in_graph_text = self.ax.text(node.x - 0.2, node.y + 0.2, node.name)
+            out_graph_text = self.ax.text(self.breadboard.X_body[-1] + 4, self.output_position,
+                                          node.name + ' = ' + str(node.value),
+                                          size=15)
+            self.output_texts[node.name] = (in_graph_text, out_graph_text)
             self.output_position += 5
 
     def draw_transmit_edges(self):

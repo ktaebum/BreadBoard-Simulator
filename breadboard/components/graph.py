@@ -1,8 +1,8 @@
 from queue import Queue
 from matplotlib import colors as mcolors
 from breadboard.tools.gates import *
-from .exceptions import *
-from .visualize.visual_breadboard import BreadBoardVisual
+from breadboard.exceptions import *
+from breadboard.visualize.visual_breadboard import BreadBoardVisual
 
 import random
 
@@ -38,14 +38,14 @@ class BreadGraph:
 
         return from_node_name, to_node_name
 
-    def add_node(self, x, y, name, gate, value=None):
+    def add_node(self, x, y, name, gate):
         if name in self.nodes.keys():
             raise DuplicatedNodeException()
 
         # if gate == 'transmit' and value is None:
         #     raise TransmitNoneValueException()
 
-        new_node = BreadGraph.BreadNode(x, y, name, gate, value, BreadGraph.color_set.pop())
+        new_node = BreadGraph.BreadNode(x, y, name, gate, BreadGraph.color_set.pop())
         self.nodes[name] = new_node
         self.num_nodes += 1
         return new_node
@@ -60,6 +60,10 @@ class BreadGraph:
     def calculate(self, verbose=False):
         # Calculate result based on topological sort
         # step1: identify source nodes
+        for node in self.nodes.values():
+            if node.gate != 'transmit':
+                node.value = []
+
         node_in_degree = {key: 0 for key in self.nodes.keys()}
         for name in self.nodes.keys():
             node = self.nodes[name]
@@ -101,21 +105,17 @@ class BreadGraph:
         return result
 
     class BreadNode:
-        def __init__(self, x, y, name, gate, value, color):
+        def __init__(self, x, y, name, gate, color):
             """
             :param x: for visualize
             :param y: for visualize
             :param name: node name
             :param gate: transmit or any other gate
-            :param value: if gate == transmit, must be a single boolean value. Else, list of input
             :param color: for visualize
             """
             self.x = x
             self.y = y
-            if gate == 'transmit':
-                self.value = value
-            else:
-                self.value = []
+            self.value = None
             self.gate = gate
             self.name = name
             self.color = color

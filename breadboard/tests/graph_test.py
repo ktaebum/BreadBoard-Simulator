@@ -1,6 +1,6 @@
 import unittest
 
-from breadboard.graph import BreadGraph
+from breadboard.components.graph import BreadGraph
 
 
 class GraphTest(unittest.TestCase):
@@ -8,8 +8,8 @@ class GraphTest(unittest.TestCase):
     def test_or_TT(self):
         graph = BreadGraph()
 
-        graph.add_node(0, 0, 'input1', 'transmit', True)
-        graph.add_node(0, 0, 'input2', 'transmit', True)
+        graph.add_node(0, 0, 'input1', 'transmit').value = True
+        graph.add_node(0, 0, 'input2', 'transmit').value = True
 
         graph.add_node(0, 0, 'or', 'OR')
 
@@ -23,8 +23,8 @@ class GraphTest(unittest.TestCase):
     def test_or_TF(self):
         graph = BreadGraph()
 
-        graph.add_node(0, 0, 'input1', 'transmit', True)
-        graph.add_node(0, 0, 'input2', 'transmit', False)
+        graph.add_node(0, 0, 'input1', 'transmit').value = True
+        graph.add_node(0, 0, 'input2', 'transmit').value = False
 
         graph.add_node(0, 0, 'or', 'OR')
 
@@ -38,8 +38,8 @@ class GraphTest(unittest.TestCase):
     def test_or_FF(self):
         graph = BreadGraph()
 
-        graph.add_node(0, 0, 'input1', 'transmit', False)
-        graph.add_node(0, 0, 'input2', 'transmit', False)
+        graph.add_node(0, 0, 'input1', 'transmit').value = False
+        graph.add_node(0, 0, 'input2', 'transmit').value = False
 
         graph.add_node(0, 0, 'or', 'OR')
 
@@ -53,8 +53,8 @@ class GraphTest(unittest.TestCase):
     def test_half_adder_TT(self):
         graph = BreadGraph()
 
-        graph.add_node(0, 0, 'input1', 'transmit', True)
-        graph.add_node(0, 0, 'input2', 'transmit', True)
+        graph.add_node(0, 0, 'input1', 'transmit').value = True
+        graph.add_node(0, 0, 'input2', 'transmit').value = True
 
         graph.add_node(0, 0, 'xor', 'XOR')
         graph.add_node(0, 0, 'and', 'AND')
@@ -73,8 +73,8 @@ class GraphTest(unittest.TestCase):
     def test_half_adder_FF(self):
         graph = BreadGraph()
 
-        graph.add_node(0, 0, 'input1', 'transmit', False)
-        graph.add_node(0, 0, 'input2', 'transmit', False)
+        graph.add_node(0, 0, 'input1', 'transmit').value = False
+        graph.add_node(0, 0, 'input2', 'transmit').value = False
 
         graph.add_node(0, 0, 'xor', 'XOR')
         graph.add_node(0, 0, 'and', 'AND')
@@ -93,8 +93,8 @@ class GraphTest(unittest.TestCase):
     def test_half_adder_TF(self):
         graph = BreadGraph()
 
-        graph.add_node(0, 0, 'input1', 'transmit', True)
-        graph.add_node(0, 0, 'input2', 'transmit', False)
+        graph.add_node(0, 0, 'input1', 'transmit').value = True
+        graph.add_node(0, 0, 'input2', 'transmit').value = False
 
         graph.add_node(0, 0, 'xor', 'XOR')
         graph.add_node(0, 0, 'and', 'AND')
@@ -113,9 +113,9 @@ class GraphTest(unittest.TestCase):
     def build_full_adder_NAND(self, input1, input2, carry):
         graph = BreadGraph()
 
-        graph.add_node(0, 0, 'input1', 'transmit', input1)
-        graph.add_node(0, 0, 'input2', 'transmit', input2)
-        graph.add_node(0, 0, 'carry', 'transmit', carry)
+        graph.add_node(0, 0, 'input1', 'transmit').value = input1
+        graph.add_node(0, 0, 'input2', 'transmit').value = input2
+        graph.add_node(0, 0, 'carry', 'transmit').value = carry
 
         graph.add_node(0, 0, 'u1', 'NAND')
         graph.add_node(0, 0, 'u2', 'NAND')
@@ -231,9 +231,9 @@ class GraphTest(unittest.TestCase):
     def build_full_adder_general(self, input1, input2, carry):
         graph = BreadGraph()
 
-        graph.add_node(0, 0, 'input1', 'transmit', input1)
-        graph.add_node(0, 0, 'input2', 'transmit', input2)
-        graph.add_node(0, 0, 'carry', 'transmit', carry)
+        graph.add_node(0, 0, 'input1', 'transmit').value = input1
+        graph.add_node(0, 0, 'input2', 'transmit').value = input2
+        graph.add_node(0, 0, 'carry', 'transmit').value = carry
 
         graph.add_node(0, 0, 'xor1', 'XOR')
         graph.add_node(0, 0, 'xor2', 'XOR')
