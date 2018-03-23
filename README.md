@@ -1,6 +1,6 @@
 # BreadBoard Simulator
 
-![Half-Adder Example](https://i.imgur.com/JErshPj.png)
+![Full-Adder Example](https://i.imgur.com/rnrNHl7.png)
 
 ## Description
 This program is interactive breadboard simulator for logic design  
@@ -44,7 +44,7 @@ Following python packages are needed
 |`save`| `(filename)` | Save all command log into file | 
 
 ## Example
-Following example is command for full-adder logic circuit which is shown at the top-most picture (Not uploaded yet)
+Following example is command for full-adder logic circuit which is shown at the top-most picture 
 ```
 input A 1I
 input B 3G
